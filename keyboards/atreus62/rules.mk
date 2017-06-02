@@ -64,3 +64,12 @@ UNICODE_ENABLE ?= yes         # Unicode
 
 # Do not enable SLEEP_LED_ENABLE. it uses the same timer as BACKLIGHT_ENABLE
 SLEEP_LED_ENABLE ?= no    # Breathing sleep LED during USB suspend
+
+USB ?= /dev/cu.usbmodem1411
+
+OPT_DEFS += -DATREUS_ASTAR
+ATREUS_UPLOAD_COMMAND = while [ ! -r $(USB) ]; do sleep 1; done; \
+                            avrdude -p $(MCU) -c avr109 -U flash:w:$(TARGET).hex -P $(USB)
+
+upload: build
+	$(ATREUS_UPLOAD_COMMAND)
