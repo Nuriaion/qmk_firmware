@@ -34,7 +34,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		{ CH_PARA,  KC_1,    KC_2,    KC_3,    KC_4,       KC_5,    KC_TRNS,         KC_6,    KC_7,        KC_8,    KC_9,    KC_0,    CH_QUOT },
 		{ KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,       KC_T,    KC_TRNS,         KC_Y,    KC_U,        KC_I,    KC_O,    KC_P,    CH_CARR },
 		{ KC_LCTRL, KC_A,    KC_S,    KC_D,    KC_F,       KC_G,    KC_TRNS,         KC_H,    KC_J,        KC_K,    KC_L,    CH_OE,   KC_RCTRL },
-		{ KC_LSPO,  CH_Y,    KC_X,    KC_C,    KC_V,       KC_B,    KC_BSPC,         KC_N,    KC_M,        KC_COMM, KC_DOT,  KC_SLSH, KC_RSPC },
+		{ KC_LSFT,  CH_Y,    KC_X,    KC_C,    KC_V,       KC_B,    KC_BSPC,         KC_N,    KC_M,        KC_COMM, KC_DOT,  KC_SLSH, KC_RSHIFT },
 		{ KC_LALT,  CH_LESS, KC_LALT, KC_LGUI, OSL(_LEFT), KC_ESC,           KC_ENT, KC_SPC,  OSL(_RIGHT), KC_RGUI, KC_QUOT, KC_ENT,  CH_ALGR }
 },
 
@@ -42,16 +42,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		{ TO(_RESET), KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_TRNS,           KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11  },
 		{ KC_TRNS,    KC_TRNS, KC_7,    KC_8,    KC_9,    KC_TRNS, KC_TRNS,           KC_F12,  KC_TRNS, KC_UP,   KC_TRNS, KC_TRNS, CH_UE },
 		{ KC_TRNS,    KC_TRNS, KC_4,    KC_5,    KC_6,    KC_0,    KC_TRNS,           KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CH_OE,   CH_AE },
-		{ KC_TRNS,    KC_TRNS, KC_1,    KC_2,    KC_3,    KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS },
+		{ KC_TRNS,    KC_TRNS, KC_1,    KC_2,    KC_3,    KC_TRNS, KC_DEL,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS },
 		{ KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS }
 },
 
 [_RIGHT] = {
-		{ KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS },
-		{ KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,            KC_TRNS, CH_LPRN, CH_RPRN, KC_TRNS, KC_TRNS, KC_TRNS },
-		{ KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,            KC_TRNS, CH_LCBR, CH_RCBR, KC_TRNS, KC_TRNS, KC_TRNS },
-		{ KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,            KC_TRNS, CH_LBRC, CH_RBRC, KC_TRNS, KC_TRNS, KC_TRNS },
-		{ KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS }
+		{ KC_TRNS,  KC_AUDIO_MUTE, KC_AUDIO_VOL_DOWN, KC_AUDIO_VOL_UP, KC_TRNS, KC_TRNS, KC_TRNS,            KC_MEDIA_PREV_TRACK,       KC_TRNS,       KC_TRNS,     KC_TRNS,        KC_TRNS, KC_TRNS },
+		{ KC_TRNS,  CH_GRV,        CH_LPRN,           CH_RPRN,         KC_TRNS, KC_TRNS, KC_TRNS,            KC_MS_WH_LEFT, KC_MS_WH_DOWN, KC_MS_WH_UP, KC_MS_WH_RIGHT, KC_TRNS, KC_TRNS },
+		{ KC_TRNS,  KC_TRNS,       CH_LCBR,           CH_RCBR,         KC_TRNS, KC_TRNS, KC_TRNS,            KC_MS_L,       KC_MS_D,       KC_MS_U,     KC_MS_R,        KC_TRNS, KC_TRNS },
+		{ KC_TRNS,  KC_TRNS,       CH_LBRC,           CH_RBRC,         KC_TRNS, KC_TRNS, KC_DEL,             KC_TRNS,       KC_MS_BTN1,    KC_MS_BTN2,  KC_MS_BTN3,     KC_TRNS, KC_TRNS },
+		{ KC_TRNS,  KC_TRNS,       KC_TRNS,           KC_TRNS,         KC_TRNS, KC_TRNS,           KC_TRNS,  KC_TRNS,       KC_TRNS,       KC_TRNS,     KC_TRNS,        KC_TRNS, KC_TRNS }
 },
 
 [_RESET] = {
