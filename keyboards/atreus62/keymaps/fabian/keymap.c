@@ -18,13 +18,46 @@
 
 //Tap Dance Declarations
 enum {
-  TD_CTRL_PO = 0
+    TD_CTRL_PO = 0
+  , CT_CLN
 };
+
+void dance_cln_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+	// {
+    register_code (KC_RALT);
+    register_code (CH_AE);
+  } else if(state->count == 2) {
+	// < 
+    register_code (CH_LESS);
+  } else {
+	// [
+    register_code (KC_RALT);
+    register_code (CH_UE);
+  }
+}
+
+void dance_cln_reset (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+	// {
+    unregister_code (KC_RALT);
+    unregister_code (CH_AE);
+  } else if(state->count == 2) {
+	// < 
+    unregister_code (CH_LESS);
+  } else {
+	// [
+    unregister_code (KC_RALT);
+    unregister_code (CH_UE);
+  }
+}
 
 //Tap Dance Definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
   //Tap once for Esc, twice for Caps Lock
-  [TD_CTRL_PO]  = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_CAPS)
+    [TD_CTRL_PO]  = ACTION_TAP_DANCE_DOUBLE(CH_LCBR, KC_ENTER)
+  , [CT_CLN] = ACTION_TAP_DANCE_FN_ADVANCED (NULL, dance_cln_finished, dance_cln_reset)
+
 // Other declarations would go here, separated by commas, if you have them
 };
 
@@ -35,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		{ KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,       KC_T,    KC_TRNS,         KC_Y,    KC_U,        KC_I,    KC_O,    KC_P,    CH_CARR },
 		{ KC_LCTRL, KC_A,    KC_S,    KC_D,    KC_F,       KC_G,    KC_TRNS,         KC_H,    KC_J,        KC_K,    KC_L,    CH_OE,   KC_RCTRL },
 		{ KC_LSPO,  CH_Y,    KC_X,    KC_C,    KC_V,       KC_B,    KC_BSPC,         KC_N,    KC_M,        KC_COMM, KC_DOT,  KC_SLSH, KC_RSPC },
-		{ KC_LALT,  CH_LESS, KC_LALT, KC_LGUI, OSL(_LEFT), KC_ESC,           KC_ENT, KC_SPC,  OSL(_RIGHT), KC_RGUI, KC_QUOT, KC_ENT,  CH_ALGR }
+		{ KC_LALT,  TD(CT_CLN), KC_LALT, KC_LGUI, OSL(_LEFT), KC_ESC,           KC_ENT, KC_SPC,  OSL(_RIGHT), KC_RGUI, KC_QUOT, KC_ENT,  CH_ALGR }
 },
 
 [_LEFT] = { 
@@ -50,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		{ KC_TRNS,  KC_AUDIO_MUTE, KC_AUDIO_VOL_DOWN, KC_AUDIO_VOL_UP, KC_TRNS, KC_TRNS, KC_TRNS,            KC_MEDIA_PREV_TRACK,       KC_TRNS,       KC_TRNS,     KC_TRNS,        KC_TRNS, KC_TRNS },
 		{ KC_TRNS,  CH_GRV,        CH_LPRN,           CH_RPRN,         KC_TRNS, KC_TRNS, KC_TRNS,            KC_MS_WH_LEFT, KC_MS_WH_DOWN, KC_MS_WH_UP, KC_MS_WH_RIGHT, KC_TRNS, KC_TRNS },
 		{ KC_TRNS,  CH_EXLM,       CH_LCBR,           CH_RCBR,         KC_TRNS, KC_TRNS, KC_TRNS,            KC_MS_L,       KC_MS_D,       KC_MS_U,     KC_MS_R,        KC_TRNS, KC_TRNS },
-		{ KC_TRNS,  KC_TRNS,       CH_LBRC,           CH_RBRC,         KC_TRNS, KC_TRNS, KC_DEL,             KC_TRNS,       KC_MS_BTN1,    KC_MS_BTN2,  KC_MS_BTN3,     KC_TRNS, KC_TRNS },
+		{ KC_TRNS,  CH_LESS,       CH_LBRC,           CH_RBRC,         KC_TRNS, KC_TRNS, KC_DEL,             KC_TRNS,       KC_MS_BTN1,    KC_MS_BTN2,  KC_MS_BTN3,     KC_TRNS, KC_TRNS },
 		{ KC_TRNS,  KC_TRNS,       KC_TRNS,           KC_TRNS,         KC_TRNS, KC_TRNS,           KC_TRNS,  KC_TRNS,       KC_TRNS,       KC_TRNS,     KC_TRNS,        KC_TRNS, KC_TRNS }
 },
 
@@ -80,7 +113,7 @@ const uint16_t PROGMEM fn_actions[] = {
 
 };
 
-const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
+/*const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
 	// MACRODOWN only works in this function
 	switch (id) {
@@ -94,4 +127,4 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 		break;
 	}
 	return MACRO_NONE;
-};
+};*/
