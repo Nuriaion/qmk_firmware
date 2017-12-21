@@ -37,7 +37,7 @@ F_USB = $(F_CPU)
 
 # Bootloader
 #     This definition is optional, and if your keyboard supports multiple bootloaders of
-#     different sizes, comment this out, and the correct address will be loaded 
+#     different sizes, comment this out, and the correct address will be loaded
 #     automatically (+60). See bootloader.mk for all options.
 BOOTLOADER = caterina
 
@@ -60,7 +60,6 @@ UNICODE_ENABLE = yes         # Unicode
 #BLUETOOTH_ENABLE = yes       # Enable Bluetooth with the Adafruit EZ-Key HID
 
 # Do not enable SLEEP_LED_ENABLE. it uses the same timer as BACKLIGHT_ENABLE
-<<<<<<< HEAD
 SLEEP_LED_ENABLE ?= no    # Breathing sleep LED during USB suspend
 
 USB ?= /dev/cu.usbmodem1411
@@ -71,6 +70,3 @@ ATREUS_UPLOAD_COMMAND = while [ ! -r $(USB) ]; do sleep 1; done; \
 
 upload: build
 	$(ATREUS_UPLOAD_COMMAND)
-=======
-SLEEP_LED_ENABLE = no    # Breathing sleep LED during USB suspend
->>>>>>> upstream/master
