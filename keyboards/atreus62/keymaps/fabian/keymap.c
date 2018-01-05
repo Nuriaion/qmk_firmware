@@ -19,17 +19,29 @@
 //Tap Dance Declarations
 enum {
   TD_ESC_CAPS = 0,
-  TD_COMPLEX = 1
+  TD_CTRL_ECKIG_OPEN,
+  TD_CTRL_ECKIG_CLOSE,
+  TD_ALT_KLEINER,
+  TD_ALT_GROESSER,
 };
 
-void x_finished (qk_tap_dance_state_t *state, void *user_data);
-void x_reset (qk_tap_dance_state_t *state, void *user_data);
+void ctrl_open_eckig_finished (qk_tap_dance_state_t *state, void *user_data);
+void ctrl_open_eckig_reset (qk_tap_dance_state_t *state, void *user_data);
+void ctrl_close_eckig_finished (qk_tap_dance_state_t *state, void *user_data);
+void ctrl_close_eckig_reset (qk_tap_dance_state_t *state, void *user_data);
+void alt_kleiner_finished (qk_tap_dance_state_t *state, void *user_data);
+void alt_kleiner_reset (qk_tap_dance_state_t *state, void *user_data);
+void alt_groesser_finished (qk_tap_dance_state_t *state, void *user_data);
+void alt_groesser_reset (qk_tap_dance_state_t *state, void *user_data);
 
 //Tap Dance Definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
   //Tap once for Esc, twice for Caps Lock
   [TD_ESC_CAPS]  = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_CAPS),
-  [TD_COMPLEX] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, x_finished, x_reset)
+  [TD_CTRL_ECKIG_OPEN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ctrl_open_eckig_finished, ctrl_open_eckig_reset),
+  [TD_CTRL_ECKIG_CLOSE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ctrl_close_eckig_finished, ctrl_close_eckig_reset),
+  [TD_ALT_KLEINER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, alt_kleiner_finished, alt_kleiner_reset),
+  [TD_ALT_GROESSER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, alt_groesser_finished, alt_groesser_reset)
 // Other declarations would go here, separated by commas, if you have them
 };
 
@@ -38,11 +50,11 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_DEFAULT] = { /* qwerty */
-		{ TD(TD_ESC_CAPS),  KC_1,        KC_2,    KC_3,    KC_4,       KC_5,    KC_TRNS,        KC_6,   KC_7,        KC_8,    KC_9,    KC_0,          CH_QUOT },
-		{ KC_TAB,   KC_Q,        KC_W,    KC_E,    KC_R,       KC_T,    KC_TRNS,        KC_Y,   KC_U,        KC_I,    KC_O,    KC_P,          CH_CARR },
-		{ KC_LCTRL, KC_A,        KC_S,    KC_D,    KC_F,       KC_G,    KC_TRNS,        KC_H,   KC_J,        KC_K,    KC_L,    CH_OE,         KC_RCTRL },
-		{ KC_LSPO,  CH_Y,        KC_X,    KC_C,    KC_V,       KC_B,    KC_BSPC,        KC_N,   KC_M,        KC_COMM, KC_DOT,  KC_SLSH,       KC_RSPC },
-		{ KC_LALT,  TD(TD_COMPLEX), KC_LALT, KC_LGUI, OSL(_LEFT), KC_ESC,         KC_ENT, KC_SPC, OSL(_RIGHT), KC_RGUI, KC_QUOT, /*TD(CT_RIGHT)*/KC_1,  CH_ALGR }
+		{ TD(TD_ESC_CAPS),        KC_1,    KC_2,        KC_3,    KC_4,       KC_5,   KC_TRNS,        KC_6,   KC_7,        KC_8,    KC_9,    KC_0,          CH_QUOT },
+		{ KC_TAB,                 KC_Q,    KC_W,        KC_E,    KC_R,       KC_T,   KC_TRNS,        KC_Y,   KC_U,        KC_I,    KC_O,    KC_P,          CH_CARR },
+		{ TD(TD_CTRL_ECKIG_OPEN), KC_A,    KC_S,        KC_D,    KC_F,       KC_G,   KC_TRNS,        KC_H,   KC_J,        KC_K,    KC_L,    CH_OE,         TD(TD_CTRL_ECKIG_CLOSE) },
+		{ KC_LSPO,                CH_Y,    KC_X,        KC_C,    KC_V,       KC_B,   KC_BSPC,        KC_N,   KC_M,        KC_COMM, KC_DOT,  KC_SLSH,       KC_RSPC },
+		{ TD(TD_ALT_KLEINER),     CH_LCBR, KC_CAPSLOCK, KC_LGUI, OSL(_LEFT), KC_ESC, KC_ENT,         KC_SPC, OSL(_RIGHT), KC_RGUI, KC_CAPSLOCK, CH_RCBR,  TD(TD_ALT_GROESSER) }
 },
 
 [_LEFT] = {
@@ -137,33 +149,113 @@ int cur_dance (qk_tap_dance_state_t *state) {
 
 //**************** Definitions needed for quad function to work *********************//
 
-//instanalize an instance of 'tap' for the 'x' tap dance.
-static tap xtap_state = {
+static tap ctrl_open_eckig_tap_state = {
   .is_press_action = true,
   .state = 0
 };
 
-void x_finished (qk_tap_dance_state_t *state, void *user_data) {
-  xtap_state.state = cur_dance(state);
-  switch (xtap_state.state) {
-    case SINGLE_TAP: register_code(KC_X); break;
+void ctrl_open_eckig_finished (qk_tap_dance_state_t *state, void *user_data) {
+  ctrl_open_eckig_tap_state.state = cur_dance(state);
+  switch (ctrl_open_eckig_tap_state.state) {
+    case SINGLE_TAP:
+      register_code(KC_LALT);
+      register_code(KC_5);
+      break;
     case SINGLE_HOLD: register_code(KC_LCTRL); break;
-    case DOUBLE_TAP: register_code(KC_ESC); break;
-    case DOUBLE_HOLD: register_code(KC_LALT); break;
-    case DOUBLE_SINGLE_TAP: register_code(KC_X); unregister_code(KC_X); register_code(KC_X);
-    //Last case is for fast typing. Assuming your key is `f`:
-    //For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-    //In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
   }
 }
 
-void x_reset (qk_tap_dance_state_t *state, void *user_data) {
-  switch (xtap_state.state) {
-    case SINGLE_TAP: unregister_code(KC_X); break;
+void ctrl_open_eckig_reset (qk_tap_dance_state_t *state, void *user_data) {
+  switch (ctrl_open_eckig_tap_state.state) {
+    case SINGLE_TAP:
+      //unregister_code(CH_LBRC);
+      unregister_code(KC_LALT);
+      unregister_code(KC_5);
+      break;
     case SINGLE_HOLD: unregister_code(KC_LCTRL); break;
-    case DOUBLE_TAP: unregister_code(KC_ESC); break;
-    case DOUBLE_HOLD: unregister_code(KC_LALT);
-    case DOUBLE_SINGLE_TAP: unregister_code(KC_X);
   }
-  xtap_state.state = 0;
+  ctrl_open_eckig_tap_state.state = 0;
 }
+
+static tap ctrl_close_eckig_tap_state = {
+  .is_press_action = true,
+  .state = 0
+};
+
+void ctrl_close_eckig_finished (qk_tap_dance_state_t *state, void *user_data) {
+  ctrl_close_eckig_tap_state.state = cur_dance(state);
+  switch (ctrl_close_eckig_tap_state.state) {
+    case SINGLE_TAP:
+      register_code(KC_LALT);
+      register_code(KC_6);
+      break;
+    case SINGLE_HOLD: register_code(KC_LCTRL); break;
+  }
+}
+
+void ctrl_close_eckig_reset (qk_tap_dance_state_t *state, void *user_data) {
+  switch (ctrl_close_eckig_tap_state.state) {
+    case SINGLE_TAP:
+      //unregister_code(CH_LBRC);
+      unregister_code(KC_LALT);
+      unregister_code(KC_6);
+      break;
+    case SINGLE_HOLD: unregister_code(KC_LCTRL); break;
+  }
+  ctrl_close_eckig_tap_state.state = 0;
+}
+
+static tap alt_kleiner_tap_state = {
+  .is_press_action = true,
+  .state = 0
+};
+
+void alt_kleiner_finished (qk_tap_dance_state_t *state, void *user_data) {
+  alt_kleiner_tap_state.state = cur_dance(state);
+  switch (alt_kleiner_tap_state.state) {
+    case SINGLE_TAP:
+      register_code(CH_LESS);
+      break;
+    case SINGLE_HOLD: register_code(KC_LALT); break;
+  }
+}
+
+void alt_kleiner_reset (qk_tap_dance_state_t *state, void *user_data) {
+  switch (alt_kleiner_tap_state.state) {
+    case SINGLE_TAP:
+      //unregister_code(CH_LBRC);
+      unregister_code(CH_LESS);
+      break;
+    case SINGLE_HOLD: unregister_code(KC_LALT); break;
+  }
+  alt_kleiner_tap_state.state = 0;
+}
+
+static tap alt_groesser_tap_state = {
+  .is_press_action = true,
+  .state = 0
+};
+
+void alt_groesser_finished (qk_tap_dance_state_t *state, void *user_data) {
+  alt_groesser_tap_state.state = cur_dance(state);
+  switch (alt_groesser_tap_state.state) {
+    case SINGLE_TAP:
+      register_code(KC_LSHIFT);
+      register_code(CH_LESS);
+      break;
+    case SINGLE_HOLD: register_code(KC_RALT); break;
+  }
+}
+
+void alt_groesser_reset (qk_tap_dance_state_t *state, void *user_data) {
+  switch (alt_groesser_tap_state.state) {
+    case SINGLE_TAP:
+      //unregister_code(CH_LBRC);
+      unregister_code(KC_LSHIFT);
+      unregister_code(CH_LESS);
+      break;
+    case SINGLE_HOLD: unregister_code(KC_RALT); break;
+  }
+  alt_groesser_tap_state.state = 0;
+}
+
